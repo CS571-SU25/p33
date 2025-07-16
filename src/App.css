@@ -1,0 +1,72 @@
+/* App.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.navbar {
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #333;
+  margin: 0 10px;
+}
+
+.image-card {
+  background-color: #fff;
+  margin: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.caption {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.interaction-buttons {
+  margin-top: 10px;
+}
+
+.upload-form {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.upload-form input {
+  padding: 8px;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.search-bar input {
+  padding: 8px;
+  width: 80%;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
