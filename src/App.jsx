@@ -23,11 +23,11 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/other-info" element={<OtherInfo />} />
           <Route path="/upload" element={<UploadForm />} />
-          <Route path="/notifications" element={<div>通知页面</div>} />
-          <Route path="/profile" element={<div>个人页面</div>} />
-          <Route path="/help" element={<div>帮助页面</div>} />
-          <Route path="/privacy" element={<div>隐私设置</div>} />
-          <Route path="/terms" element={<div>用户协议</div>} />
+          <Route path="/notifications" element={<div>Notifications Page</div>} />
+          <Route path="/profile" element={<div>Profile Page</div>} />
+          <Route path="/help" element={<div>Help & Support</div>} />
+          <Route path="/privacy" element={<div>Privacy Settings</div>} />
+          <Route path="/terms" element={<div>Terms of Service</div>} />
         </Routes>
       </Layout>
     </HashRouter>

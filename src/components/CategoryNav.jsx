@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import './CategoryNav.css';
 
 function CategoryNav() {
-  const [activeCategory, setActiveCategory] = useState('推荐');
+  const [activeCategory, setActiveCategory] = useState('For You');
 
   const categories = [
-    '推荐',
-    '关注',
-    '热榜',
+    'For You',
+    'Following',
+    'Trending',
     'VRChat',
-    '游戏',
-    '娱乐',
-    '科技',
-    '时尚',
-    '美食',
-    '旅行',
-    '摄影',
-    '艺术',
-    '音乐'
+    'Gaming',
+    'Entertainment',
+    'Technology',
+    'Fashion',
+    'Food',
+    'Travel',
+    'Photography',
+    'Art',
+    'Music'
   ];
 
   return (

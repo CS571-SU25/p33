@@ -31,7 +31,7 @@ function Header({ onSearch }) {
         <form className="search-bar" onSubmit={handleSearchSubmit}>
           <input 
             type="text" 
-            placeholder="搜索笔记、用户" 
+            placeholder="Search posts or users..." 
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -44,8 +44,8 @@ function Header({ onSearch }) {
       </div>
       
       <div className="header-right">
-        <a href="#" className="header-link">创作中心</a>
-        <a href="#" className="header-link">业务合作</a>
+        <a href="#" className="header-link">Creator Studio</a>
+        <a href="#" className="header-link">Partnerships</a>
       </div>
     </header>
   );
