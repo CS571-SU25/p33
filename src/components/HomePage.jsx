@@ -108,20 +108,20 @@ function HomePage({ searchTerm }) {
     <div className="home-page">
       {searchTerm && (
         <div className="search-result-header">
-          <h3>搜索 "{searchTerm}" 的结果：{filteredPosts.length} 条</h3>
+          <h3>Search results for "{searchTerm}": {filteredPosts.length} posts</h3>
         </div>
       )}
       <ContentGrid posts={filteredPosts} onPostClick={handlePostClick} />
       {!searchTerm && isLoading && (
         <div className="loading-indicator">
           <div className="spinner"></div>
-          <span>加载更多...</span>
+          <span>Loading more...</span>
         </div>
       )}
       {searchTerm && filteredPosts.length === 0 && (
         <div className="no-results">
-          <p>没有找到相关内容</p>
-          <p>尝试使用其他关键词</p>
+          <p>No results found</p>
+          <p>Try using different keywords</p>
         </div>
       )}
       {selectedPost && (

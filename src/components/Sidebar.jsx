@@ -10,7 +10,7 @@ function Sidebar() {
   const menuItems = [
     { 
       id: 'discover', 
-      label: '发现', 
+      label: 'Discover', 
       path: '/', 
       icon: (
         <svg viewBox="0 0 24 24" width="20" height="20">
@@ -20,7 +20,7 @@ function Sidebar() {
     },
     { 
       id: 'upload', 
-      label: '发布', 
+      label: 'Upload', 
       path: '/upload', 
       icon: (
         <svg viewBox="0 0 24 24" width="20" height="20">
@@ -31,7 +31,7 @@ function Sidebar() {
     },
     { 
       id: 'notifications', 
-      label: '通知', 
+      label: 'Notifications', 
       path: '/notifications', 
       icon: (
         <svg viewBox="0 0 24 24" width="20" height="20">
@@ -42,7 +42,7 @@ function Sidebar() {
     },
     { 
       id: 'profile', 
-      label: '我', 
+      label: 'Profile', 
       path: '/profile', 
       icon: (
         <svg viewBox="0 0 24 24" width="20" height="20">
@@ -53,10 +53,10 @@ function Sidebar() {
   ];
 
   const moreItems = [
-    { label: '帮助与客服', path: '/help' },
-    { label: '隐私设置', path: '/privacy' },
-    { label: '用户协议', path: '/terms' },
-    { label: '关于我们', path: '/about-us' }
+    { label: 'Help & Support', path: '/help' },
+    { label: 'Privacy Settings', path: '/privacy' },
+    { label: 'Terms of Service', path: '/terms' },
+    { label: 'About Us', path: '/about-us' }
   ];
 
   const handleItemClick = (item) => {
@@ -92,7 +92,7 @@ function Sidebar() {
               <path fill="currentColor" d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"/>
             </svg>
           </span>
-          <span className="label">更多</span>
+          <span className="label">More</span>
         </button>
         
         {showMore && (

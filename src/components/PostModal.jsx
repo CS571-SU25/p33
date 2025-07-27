@@ -55,7 +55,7 @@ function PostModal({ post, onClose }) {
               className={`follow-btn ${isFollowing ? 'following' : ''}`}
               onClick={() => setIsFollowing(!isFollowing)}
             >
-              {isFollowing ? '已关注' : '关注'}
+              {isFollowing ? 'Following' : 'Follow'}
             </button>
           </div>
 
@@ -78,7 +78,7 @@ function PostModal({ post, onClose }) {
 
           <div className="comments-section">
             <div className="comments-header">
-              <h3>共 {post.comments.length} 条评论</h3>
+              <h3>{post.comments.length} Comments</h3>
             </div>
             
             <div className="comments-list">
@@ -92,8 +92,8 @@ function PostModal({ post, onClose }) {
                     </div>
                     <p className="comment-text">{comment.content}</p>
                     <div className="comment-actions">
-                      <button className="comment-action">点赞</button>
-                      <button className="comment-action">回复</button>
+                      <button className="comment-action">Like</button>
+                      <button className="comment-action">Reply</button>
                     </div>
                   </div>
                 </div>
@@ -104,7 +104,7 @@ function PostModal({ post, onClose }) {
           <form className="comment-input-form" onSubmit={handleCommentSubmit}>
             <input
               type="text"
-              placeholder="说点什么..."
+              placeholder="Share your thoughts..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               className="comment-input"

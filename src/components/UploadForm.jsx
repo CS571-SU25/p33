@@ -49,7 +49,7 @@ function UploadForm() {
   return (
     <div className="upload-page">
       <div className="upload-container">
-        <h1 className="upload-title">发布笔记</h1>
+        <h1 className="upload-title">Create Post</h1>
         
         <div className="upload-content">
           <div className="upload-left">
@@ -68,7 +68,7 @@ function UploadForm() {
                       className="change-image-btn"
                       onClick={() => document.getElementById('file-input').click()}
                     >
-                      更换图片
+                      Change Image
                     </button>
                   </div>
                 </div>
@@ -77,8 +77,8 @@ function UploadForm() {
                   <svg viewBox="0 0 24 24" width="48" height="48">
                     <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                   </svg>
-                  <p>拖拽图片到这里，或点击选择</p>
-                  <p className="upload-hint">支持 JPG、PNG 格式</p>
+                  <p>Drag image here or click to select</p>
+                  <p className="upload-hint">Supports JPG, PNG formats</p>
                 </div>
               )}
               <input
@@ -94,12 +94,12 @@ function UploadForm() {
           <div className="upload-right">
             <form onSubmit={handleSubmit} className="upload-form">
               <div className="form-group">
-                <label>标题</label>
+                <label>Title</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="输入标题（必填）"
+                  placeholder="Enter title (required)"
                   maxLength={50}
                   required
                 />
@@ -107,11 +107,11 @@ function UploadForm() {
               </div>
 
               <div className="form-group">
-                <label>正文</label>
+                <label>Content</label>
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="分享你的VRChat精彩瞬间..."
+                  placeholder="Share your VRChat moments..."
                   maxLength={1000}
                   rows={6}
                 />
@@ -119,31 +119,31 @@ function UploadForm() {
               </div>
 
               <div className="form-group">
-                <label>标签</label>
+                <label>Tags</label>
                 <input
                   type="text"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
-                  placeholder="用逗号分隔标签，如：VRChat,虚拟现实,游戏"
+                  placeholder="Separate tags with commas, e.g: VRChat, VirtualReality, Gaming"
                 />
               </div>
 
               <div className="form-group">
-                <label>位置</label>
+                <label>Location</label>
                 <input
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="VRChat世界名称"
+                  placeholder="VRChat world name"
                 />
               </div>
 
               <div className="form-actions">
                 <button type="button" className="cancel-btn">
-                  取消
+                  Cancel
                 </button>
                 <button type="submit" className="publish-btn" disabled={!image || !title}>
-                  发布
+                  Publish
                 </button>
               </div>
             </form>
