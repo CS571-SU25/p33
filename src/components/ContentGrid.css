@@ -1,0 +1,33 @@
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gutter);
+  padding: var(--gutter) 0;
+  min-height: calc(100vh - 120px);
+}
+
+/* 响应式设计 */
+@media (max-width: 1600px) {
+  .content-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .content-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
