@@ -36,14 +36,14 @@ function UploadForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('上传内容:', {
+    console.log('Upload content:', {
       image,
       title,
       content,
       tags: tags.split(',').map(tag => tag.trim()),
       location
     });
-    // 这里会调用API上传
+    // Here will call API to upload
   };
 
   return (

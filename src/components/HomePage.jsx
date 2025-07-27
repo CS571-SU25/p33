@@ -15,35 +15,35 @@ function HomePage({ searchTerm }) {
       const index = startIndex + i;
       return {
         id: index,
-        title: `VRChat精彩瞬间 ${index}`,
+        title: `Amazing VRChat Moment ${index}`,
         imageUrl: `https://picsum.photos/400/600?random=${index}`,
         author: {
           id: `user${index}`,
-          name: `用户${index}`,
+          name: `User${index}`,
           avatar: `https://picsum.photos/40/40?random=${index + 100}`
         },
         likes: Math.floor(Math.random() * 1000) + 10,
-        content: `这是一个精彩的VRChat瞬间！在虚拟世界中体验到了前所未有的乐趣和互动。${index}`,
-        tags: ['VRChat', '虚拟现实', '游戏'],
+        content: `This is an amazing VRChat moment! Experiencing unprecedented fun and interaction in the virtual world. #${index}`,
+        tags: ['VRChat', 'VirtualReality', 'Gaming'],
         createdAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
-        location: 'VRChat世界',
+        location: 'VRChat World',
         comments: [
           {
             id: 1,
             author: {
-              name: `评论者${index}`,
+              name: `Commenter${index}`,
               avatar: `https://picsum.photos/30/30?random=${index + 200}`
             },
-            content: '太棒了！',
+            content: 'Awesome!',
             createdAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString()
           },
           {
             id: 2,
             author: {
-              name: `评论者${index + 1}`,
+              name: `Commenter${index + 1}`,
               avatar: `https://picsum.photos/30/30?random=${index + 300}`
             },
-            content: '我也想去这个世界！',
+            content: 'I want to visit this world too!',
             createdAt: new Date(Date.now() - Math.random() * 12 * 60 * 60 * 1000).toISOString()
           }
         ]
