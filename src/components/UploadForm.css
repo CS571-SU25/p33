@@ -1,0 +1,233 @@
+.upload-page {
+  padding: var(--gutter) 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.upload-container {
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  padding: var(--padding);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.upload-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--color-primary);
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.upload-content {
+  display: flex;
+  gap: var(--padding);
+}
+
+.upload-left {
+  flex: 0 0 40%;
+}
+
+.upload-area {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area:hover,
+.upload-area.dragging {
+  border-color: var(--color-accent);
+  background: rgba(255,0,54,0.05);
+}
+
+.upload-area.has-image {
+  border: none;
+  cursor: default;
+}
+
+.upload-placeholder {
+  text-align: center;
+  color: var(--color-secondary);
+}
+
+.upload-placeholder svg {
+  margin-bottom: 16px;
+  color: var(--color-secondary);
+}
+
+.upload-placeholder p {
+  margin: 8px 0;
+  font-size: var(--font-base);
+}
+
+.upload-hint {
+  font-size: var(--font-sm) !important;
+  color: rgba(255,255,255,0.5) !important;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.image-preview:hover .image-overlay {
+  opacity: 1;
+}
+
+.change-image-btn {
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: var(--bg-page);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-base);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.change-image-btn:hover {
+  transform: scale(1.05);
+}
+
+.upload-right {
+  flex: 1;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: var(--font-base);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-size: var(--font-base);
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-secondary);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.char-count {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  font-size: var(--font-sm);
+  color: var(--color-secondary);
+  pointer-events: none;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.cancel-btn,
+.publish-btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.cancel-btn {
+  background: rgba(255,255,255,0.1);
+  color: var(--color-primary);
+}
+
+.cancel-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.publish-btn {
+  background: var(--color-accent);
+  color: white;
+}
+
+.publish-btn:hover:not(:disabled) {
+  background: #E6002F;
+  transform: translateY(-1px);
+}
+
+.publish-btn:disabled {
+  background: rgba(255,255,255,0.1);
+  color: var(--color-secondary);
+  cursor: not-allowed;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .upload-content {
+    flex-direction: column;
+  }
+
+  .upload-left {
+    flex: none;
+  }
+
+  .upload-area {
+    aspect-ratio: 4/3;
+  }
+}

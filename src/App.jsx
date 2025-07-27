@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 
@@ -9,11 +9,17 @@ import OtherInfo from './components/OtherInfo';
 import UploadForm from './components/UploadForm';
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
     <HashRouter>
-      <Layout>
+      <Layout onSearch={handleSearch}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage searchTerm={searchTerm} />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/other-info" element={<OtherInfo />} />
           <Route path="/upload" element={<UploadForm />} />
