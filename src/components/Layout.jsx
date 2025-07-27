@@ -4,10 +4,10 @@ import Sidebar from './Sidebar';
 import CategoryNav from './CategoryNav';
 import './Layout.css';
 
-function Layout({ children }) {
+function Layout({ children, onSearch }) {
   return (
     <div className="layout">
-      <Header />
+      <Header onSearch={onSearch} />
       <CategoryNav />
       <div className="layout-body">
         <Sidebar />
