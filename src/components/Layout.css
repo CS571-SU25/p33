@@ -8,13 +8,13 @@
 .layout-body {
   display: flex;
   flex: 1;
-  margin-top: 64px;
+  margin-top: 120px; /* 64px header + 56px category nav */
 }
 
 .main-content {
   flex: 1;
   margin-left: 240px;
   padding: 0 var(--padding);
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 120px);
   background: var(--bg-page);
 }
