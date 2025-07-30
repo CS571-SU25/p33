@@ -1,7 +1,7 @@
 import React from 'react';
 import './NotificationItem.css';
 
-function NotificationItem({ type, user, postThumbnail, text, time }) {
+function NotificationItem({ user, postThumbnail, text, time }) {
   return (
     <li className="notification-item">
       <div className="notif-left">

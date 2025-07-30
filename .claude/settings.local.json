@@ -3,7 +3,16 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(npm run lint)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm start)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(node:*)",
+      "Bash(rm:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(timeout 15 npm run dev)"
     ],
     "deny": []
   }

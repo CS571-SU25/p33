@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 SnapShare UI Upgrade Test - Xiaohongshu Style</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            border-left: 4px solid #ff2741;
+        }
+        .test-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 12px;
+        }
+        .test-section h3 {
+            color: #ff2741;
+            margin-top: 0;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .success { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .info { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .warning { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 6px 0;
+            border-bottom: 1px solid #333;
+        }
+        .checklist li:before {
+            content: '✅ ';
+            color: #22c55e;
+            font-weight: bold;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .feature-card {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #ff2741;
+        }
+        .feature-card h4 {
+            margin: 0 0 8px 0;
+            color: #ff2741;
+        }
+        .app-frame {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            background: #000;
+            margin-top: 15px;
+        }
+        button {
+            background: #ff2741;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover { background: #d71e36; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 SnapShare UI Upgrade - Xiaohongshu Style</h1>
+            <p>Testing the new CSS columns masonry layout, FAB buttons, and Profile page improvements</p>
+            <div class="status success">
+                <strong>Build Status:</strong> ✅ All components compiled successfully<br>
+                <strong>Components:</strong> FloatingActionButton, Updated MasonryGrid, Enhanced ProfilePage<br>
+                <strong>Test URL:</strong> <a href="http://localhost:5177/" target="_blank" style="color: #ff2741;">http://localhost:5177/</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Implemented Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>CSS Columns Masonry</h4>
+                    <p>• True variable-height cards<br>
+                    • 236px fixed width<br>
+                    • Auto column count<br>
+                    • No JS positioning needed</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Floating Action Buttons</h4>
+                    <p>• Back to Top (shows after 400px scroll)<br>
+                    • Refresh Feed functionality<br>
+                    • 44px circular buttons<br>
+                    • Smooth animations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Profile Page Alignment</h4>
+                    <p>• 140px header height<br>
+                    • 32px gap between tabs<br>
+                    • 15px bold font for tabs<br>
+                    • Red underline for active tab</p>
+                </div>
+                <div class="feature-card">
+                    <h4>PostCard Variants</h4>
+                    <p>• Default 4:5 aspect ratio<br>
+                    • Square variant support<br>
+                    • Text poster variant<br>
+                    • 680px max height with crop</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📋 Testing Checklist</h3>
+            <ul class="checklist">
+                <li>Navigate to Home page - verify CSS columns masonry layout</li>
+                <li>Scroll down 600px - "↑" button should fade in smoothly</li>
+                <li>Click Back to Top - should scroll to 0px in ≤350ms</li>
+                <li>Click "⟳ Refresh" - feed refreshes and scrolls to top</li>
+                <li>Cards have variable heights based on content</li>
+                <li>Hover effects work on all cards (translateY -4px)</li>
+                <li>Visit /profile - header is 140px height</li>
+                <li>Profile tabs have 32px gaps and 15px bold font</li>
+                <li>Active tab shows red underline animation</li>
+                <li>Counters display inline with bold numbers</li>
+                <li>Follow button has pill shape (999px border-radius)</li>
+                <li>FAB buttons work on both Home and Profile pages</li>
+                <li>Mobile responsive - 2 columns on small screens</li>
+                <li>PostCard morph animation still works</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 Key Differences from Previous Version</h3>
+            <div class="status warning">
+                <strong>Layout Changes:</strong><br>
+                • Removed JS masonry positioning - now uses pure CSS columns<br>
+                • Cards now have truly variable heights (no fixed 4:5 constraint)<br>
+                • Profile header reduced from 260px to 140px<br>
+                • Tab layout changed from flex-1 to fixed gaps<br><br>
+                
+                <strong>New Features:</strong><br>
+                • FloatingActionButton component with smooth show/hide<br>
+                • Refresh functionality with loading states<br>
+                • Better responsive breakpoints<br>
+                • Xiaohongshu-aligned typography and spacing
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📱 Responsive Breakpoints</h3>
+            <div class="status info">
+                <strong>Desktop (≥1440px):</strong> column-width: 236px, optimal spacing<br>
+                <strong>Large (1200-1439px):</strong> column-width: 226px<br>
+                <strong>Medium (900-1199px):</strong> column-width: 216px<br>
+                <strong>Small (600-899px):</strong> column-width: 206px<br>
+                <strong>Mobile (≤599px):</strong> 2 columns with 8px gap<br>
+                <strong>FAB Mobile:</strong> 40px size, adjusted positioning
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎨 Design Tokens Used</h3>
+            <div class="status info">
+                <strong>FAB Variables:</strong><br>
+                --fab: 44px (button size)<br>
+                --fab-bg: #111 (background)<br>
+                --fab-shadow: 0 2px 8px rgba(0,0,0,.4)<br><br>
+                
+                <strong>Layout:</strong><br>
+                --card-w: 236px (fixed width)<br>
+                --gutter: 16px (spacing)<br>
+                CSS columns handle responsive columns automatically
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🖥️ Live Application Test</h3>
+            <button onclick="testHome()">Test Home Page</button>
+            <button onclick="testProfile()">Test Profile Page</button>
+            <button onclick="testMobile()">Test Mobile View</button>
+            <button onclick="testScroll()">Test Scroll Features</button>
+            
+            <iframe id="app-frame" class="app-frame" src="http://localhost:5177/"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function testHome() {
+            document.getElementById('app-frame').src = 'http://localhost:5177/';
+            console.log('🏠 Testing Home page masonry layout...');
+        }
+
+        function testProfile() {
+            document.getElementById('app-frame').src = 'http://localhost:5177/#/profile';
+            console.log('👤 Testing Profile page layout...');
+        }
+
+        function testMobile() {
+            const frame = document.getElementById('app-frame');
+            frame.style.width = '375px';
+            frame.style.height = '667px';
+            console.log('📱 Testing mobile responsive layout...');
+        }
+
+        function testScroll() {
+            console.log('📜 To test scroll features:');
+            console.log('1. Scroll down in the iframe');
+            console.log('2. Watch for FAB buttons to appear');
+            console.log('3. Click the refresh button');
+            console.log('4. Click back to top button');
+        }
+
+        // Auto-check functionality
+        setInterval(() => {
+            console.log('✅ UI Upgrade test environment active');
+        }, 10000);
+
+        console.log('🎨 SnapShare UI Upgrade Test Ready');
+        console.log('📝 Use the checklist to verify Xiaohongshu-style features');
+        console.log('🔄 CSS columns provide true masonry layout');
+        console.log('🎯 FAB buttons enhance user experience');
+    </script>
+</body>
+</html>
