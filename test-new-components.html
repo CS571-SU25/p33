@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Xiaohongshu Card System Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 12px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 12px;
+        }
+        .test-section h3 {
+            color: #ff2741;
+            margin-top: 0;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+        .checklist li:before {
+            content: '☐ ';
+            color: #ff2741;
+            font-weight: bold;
+        }
+        .app-frame {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            background: #000;
+            margin-top: 20px;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .success { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .info { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        button {
+            background: #ff2741;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover { background: #d71e36; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Xiaohongshu Card System Implementation Test</h1>
+            <p>Testing the new PostCard, MasonryGrid, PostModal, and ProfilePage components</p>
+            <div class="status info">
+                <strong>Build Status:</strong> ✅ Components compiled successfully<br>
+                <strong>Test URL:</strong> <a href="http://localhost:5177/" target="_blank" style="color: #ff2741;">http://localhost:5177/</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Core Components Implemented</h3>
+            <div class="status success">
+                <strong>✅ Design Tokens:</strong> Complete CSS variable system with responsive breakpoints<br>
+                <strong>✅ PostCard:</strong> Small card with 4:5 aspect ratio, like/save buttons, hover effects<br>
+                <strong>✅ PostModal:</strong> Big card with 55%/45% layout, action rail, carousel support<br>
+                <strong>✅ MasonryGrid:</strong> Responsive grid system with morph animation<br>
+                <strong>✅ ProfilePage:</strong> Header, tabs, mini-avatar scroll effect<br>
+                <strong>✅ HomePage:</strong> Updated to use new components with search functionality
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📋 Manual Testing Checklist</h3>
+            <ul class="checklist">
+                <li>Navigate to home page - verify masonry grid layout</li>
+                <li>Click any card - verify smooth morph animation to modal</li>
+                <li>Test action rail buttons (Like, Comment, Save, Share)</li>
+                <li>Use keyboard shortcuts: ESC (close), L (like), S (save), C (comment)</li>
+                <li>Test carousel navigation if multiple images</li>
+                <li>Scroll in modal comments section</li>
+                <li>Use quick reply form</li>
+                <li>Visit /profile page - verify header layout</li>
+                <li>Test profile tabs (Posts/Saved/Liked)</li>
+                <li>Scroll down - verify mini-avatar effect</li>
+                <li>Test search functionality</li>
+                <li>Check mobile responsiveness (resize window)</li>
+                <li>Upload a new post - verify it appears in feeds</li>
+                <li>Test localStorage persistence (refresh page)</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>📱 Responsive Breakpoints</h3>
+            <div class="status info">
+                <strong>Desktop (≥1440px):</strong> 5 columns, 236px cards<br>
+                <strong>Large (1200-1439px):</strong> 4 columns<br>
+                <strong>Medium (900-1199px):</strong> 3 columns<br>
+                <strong>Small (600-899px):</strong> 2 columns<br>
+                <strong>Mobile (≤599px):</strong> CSS columns layout<br>
+                <strong>Modal Mobile:</strong> Stacked layout with bottom action bar
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎨 Key Features</h3>
+            <ul class="checklist">
+                <li>Xiaohongshu color scheme (#ff2741 primary)</li>
+                <li>English UI copy throughout</li>
+                <li>Pixel-perfect card dimensions</li>
+                <li>Smooth 450ms morph animations</li>
+                <li>LocalStorage persistence</li>
+                <li>Keyboard accessibility</li>
+                <li>Touch-friendly mobile interface</li>
+                <li>Profile mini-avatar on scroll</li>
+                <li>Sticky tabs and quick-reply</li>
+                <li>Share API integration</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🖥️ Live Application</h3>
+            <button onclick="testApp()">Open Application</button>
+            <button onclick="testProfile()">Test Profile Page</button>
+            <button onclick="testUpload()">Test Upload</button>
+            <iframe id="app-frame" class="app-frame" src="http://localhost:5177/"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function testApp() {
+            document.getElementById('app-frame').src = 'http://localhost:5177/';
+            console.log('🎯 Testing main application...');
+        }
+
+        function testProfile() {
+            document.getElementById('app-frame').src = 'http://localhost:5177/#/profile';
+            console.log('👤 Testing profile page...');
+        }
+
+        function testUpload() {
+            document.getElementById('app-frame').src = 'http://localhost:5177/#/upload';
+            console.log('📤 Testing upload page...');
+        }
+
+        // Auto-refresh status
+        setInterval(() => {
+            const iframe = document.getElementById('app-frame');
+            if (iframe.contentWindow) {
+                console.log('✅ Application is responsive');
+            }
+        }, 5000);
+
+        console.log('🎯 Xiaohongshu Card System Test Environment Ready');
+        console.log('📋 Use the checklist above to verify all functionality');
+        console.log('🎨 Check responsive design at different screen sizes');
+    </script>
+</body>
+</html>

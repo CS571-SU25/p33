@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>调试测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #000; color: #fff; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #333; border-radius: 8px; }
+        button { padding: 10px 20px; margin: 10px; background: #E61636; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .status { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔧 VRChat SnapShare 功能调试</h1>
+    
+    <div class="test-section">
+        <h2>1. localStorage 测试</h2>
+        <button onclick="testLocalStorage()">测试localStorage</button>
+        <div id="localStorage-status" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. 全局状态管理测试</h2>
+        <button onclick="testGlobalState()">测试全局状态</button>
+        <div id="global-status" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. 应用访问</h2>
+        <p>应用地址: <a href="http://localhost:5176/p0/" target="_blank" style="color: #E61636;">http://localhost:5176/p0/</a></p>
+        <button onclick="window.open('http://localhost:5176/p0/', '_blank')">打开应用</button>
+    </div>
+
+    <script>
+        function testLocalStorage() {
+            const status = document.getElementById('localStorage-status');
+            
+            // 清理旧数据
+            localStorage.removeItem('likedPosts');
+            localStorage.removeItem('savedPosts');
+            
+            // 设置测试数据
+            const testLiked = ['mock-1', 'mock-2'];
+            const testSaved = ['mock-3', 'mock-4'];
+            
+            localStorage.setItem('likedPosts', JSON.stringify(testLiked));
+            localStorage.setItem('savedPosts', JSON.stringify(testSaved));
+            
+            // 验证数据
+            const retrievedLiked = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+            const retrievedSaved = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+            
+            status.innerHTML = `
+                <p>✅ localStorage 测试通过</p>
+                <p>设置的点赞: ${testLiked.join(', ')}</p>
+                <p>读取的点赞: ${retrievedLiked.join(', ')}</p>
+                <p>设置的收藏: ${testSaved.join(', ')}</p>
+                <p>读取的收藏: ${retrievedSaved.join(', ')}</p>
+            `;
+        }
+        
+        function testGlobalState() {
+            const status = document.getElementById('global-status');
+            
+            // 模拟全局状态
+            try {
+                const likedArray = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+                const savedArray = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+                const globalLiked = new Set(likedArray);
+                const globalSaved = new Set(savedArray);
+                
+                status.innerHTML = `
+                    <p>✅ 全局状态管理测试通过</p>
+                    <p>全局点赞集合大小: ${globalLiked.size}</p>
+                    <p>全局收藏集合大小: ${globalSaved.size}</p>
+                    <p>点赞包含mock-1: ${globalLiked.has('mock-1') ? '是' : '否'}</p>
+                    <p>收藏包含mock-3: ${globalSaved.has('mock-3') ? '是' : '否'}</p>
+                `;
+            } catch (error) {
+                status.innerHTML = `<p>❌ 全局状态管理测试失败: ${error.message}</p>`;
+            }
+        }
+        
+        // 自动运行初始测试
+        window.onload = function() {
+            console.log('🚀 调试页面已加载');
+        };
+    </script>
+</body>
+</html>

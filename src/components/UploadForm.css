@@ -48,6 +48,11 @@
   background: rgba(255,0,54,0.05);
 }
 
+.upload-area.error {
+  border-color: var(--accent);
+  background: rgba(255, 0, 31, 0.05);
+}
+
 .upload-area.has-image {
   border: none;
   cursor: default;
@@ -215,6 +220,213 @@
   background: rgba(255,255,255,0.1);
   color: var(--color-secondary);
   cursor: not-allowed;
+}
+
+/* 上传错误提示 */
+.upload-error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: var(--font-size-sm);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.upload-error-message svg {
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* 表单字段错误提示 */
+.field-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.field-error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: var(--font-size-sm);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.field-error-message svg {
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.input-error {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px rgba(255, 0, 31, 0.2) !important;
+}
+
+/* 登录错误页面 */
+.upload-error {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  border: 1px solid #2A2A2A;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.upload-error h2 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-lg);
+}
+
+.upload-error p {
+  margin: 0 0 24px 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.login-redirect-btn {
+  padding: 12px 24px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #FFF;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.login-redirect-btn:hover {
+  background: #E60032;
+  transform: translateY(-1px);
+}
+
+/* 多图片预览样式 */
+.images-preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  flex: 1;
+}
+
+.image-preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  transition: transform 0.2s;
+}
+
+.image-preview-item:hover {
+  transform: scale(1.02);
+}
+
+.image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0,0,0,0.7);
+  border: none;
+  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.remove-image-btn:hover {
+  background: rgba(255,0,31,0.8);
+}
+
+.main-image-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: var(--color-accent);
+  color: #FFFFFF;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.add-more-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  transition: all 0.2s;
+}
+
+.add-more-images:hover {
+  border-color: var(--color-accent);
+  background: rgba(255,0,31,0.1);
+}
+
+.add-image-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--color-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.add-image-btn:hover {
+  color: var(--color-accent);
+}
+
+.image-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--color-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.upload-area.has-images {
+  min-height: 300px;
+  padding: 16px;
 }
 
 /* 响应式设计 */

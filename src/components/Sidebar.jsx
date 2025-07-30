@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './Sidebar.css';
 
 function Sidebar() {
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAuthenticated } = useAuth();
 
-  const menuItems = [
+  const baseMenuItems = [
     { 
       id: 'discover', 
       label: 'Discover', 
@@ -27,7 +29,7 @@ function Sidebar() {
           <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
         </svg>
       ),
-      disabled: true
+      disabled: !isAuthenticated
     },
     { 
       id: 'notifications', 
@@ -38,19 +40,23 @@ function Sidebar() {
           <path fill="currentColor" d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/>
         </svg>
       ),
-      badge: 2
-    },
-    { 
-      id: 'profile', 
-      label: 'Profile', 
-      path: '/profile', 
-      icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20">
-          <path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
-        </svg>
-      )
+      badge: isAuthenticated ? 2 : 0
     }
   ];
+
+  // Add profile item only when not authenticated
+  const menuItems = isAuthenticated 
+    ? baseMenuItems 
+    : [...baseMenuItems, {
+        id: 'profile', 
+        label: 'Profile', 
+        path: '/login', 
+        icon: (
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+          </svg>
+        )
+      }];
 
   const moreItems = [
     { label: 'Help & Support', path: '/help' },
@@ -59,10 +65,17 @@ function Sidebar() {
     { label: 'About Us', path: '/about-us' }
   ];
 
+
   const handleItemClick = (item) => {
     if (item.disabled) return;
     navigate(item.path);
   };
+
+
+  const handleUserAvatarClick = () => {
+    navigate('/profile');
+  };
+
 
   return (
     <aside className="sidebar">
@@ -75,11 +88,32 @@ function Sidebar() {
           >
             <span className="icon">{item.icon}</span>
             <span className="label">{item.label}</span>
-            {item.badge && (
+            {item.badge > 0 && (
               <span className="badge">{item.badge}</span>
             )}
           </button>
         ))}
+        
+        {/* User Avatar Section - Only show when authenticated */}
+        {isAuthenticated && (
+          <>
+            <div className="sidebar-divider"></div>
+            <div className="user-section">
+              <button 
+                className="user-avatar-btn"
+                onClick={handleUserAvatarClick}
+                aria-label="Go to profile"
+              >
+                <img 
+                  src={user?.avatar || 'https://picsum.photos/40/40?random=1'} 
+                  alt={user?.name || 'User avatar'}
+                  className="user-avatar"
+                />
+                <span className="user-name">{user?.name || 'Me'}</span>
+              </button>
+            </div>
+          </>
+        )}
         
         <div className="sidebar-divider"></div>
         
