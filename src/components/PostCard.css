@@ -2,7 +2,7 @@
 .xh-post {
   position: relative;
   width: 100%; /* Let CSS columns control width */
-  background: #141414; /* Card bg as specified */
+  background: var(--bg-secondary); /* Card bg using theme variable */
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
@@ -200,8 +200,8 @@
   top: 32px;
   right: 0;
   min-width: 120px;
-  background: #141414;
-  border: 1px solid #222;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-secondary);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   padding: 4px 0;
@@ -221,14 +221,14 @@
   gap: 8px;
   padding: 8px 12px;
   font-size: 13px;
-  color: #ccc;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
 .mini-menu li:hover {
-  background: #1f1f1f;
-  color: #fff;
+  background: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .mini-menu li:first-child:hover {
@@ -324,7 +324,7 @@
 
 .action-count {
   font-size: 12px; /* 12px grey as specified */
-  color: #666; /* #666 as specified */
+  color: var(--text-tertiary); /* Using theme variable */
   font-weight: normal;
 }
 

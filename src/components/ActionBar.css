@@ -1,13 +1,13 @@
 .action-bar {
   height: 48px;
-  background: #1A1A1A;
+  background: var(--bg-secondary);
   border-radius: 24px;
   padding: 0 16px;
   display: flex;
   align-items: center;
   gap: 24px;
   margin: 16px;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid var(--border-primary);
 }
 
 .action-btn {
@@ -28,7 +28,7 @@
 }
 
 .action-btn:hover {
-  background: rgba(255,255,255,0.05);
+  background: var(--hover-bg);
   color: var(--color-primary);
 }
 
@@ -77,8 +77,8 @@
   top: -40px;
   left: 50%;
   transform: translateX(-50%);
-  background: #333333;
-  color: #FFFFFF;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 12px;
@@ -95,7 +95,7 @@
   left: 50%;
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: #333333;
+  border-top-color: var(--bg-tertiary);
 }
 
 /* 响应式设计 */
@@ -145,11 +145,11 @@
 /* 暗色主题适配 */
 @media (prefers-color-scheme: dark) {
   .save-tooltip {
-    background: #555555;
-    color: #FFFFFF;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
   }
   
   .save-tooltip::after {
-    border-top-color: #555555;
+    border-top-color: var(--bg-tertiary);
   }
 }

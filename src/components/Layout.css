@@ -16,7 +16,5 @@
   margin-left: 240px;
   padding: 0 var(--padding);
   min-height: calc(100vh - 120px);
-  background: rgba(13, 13, 13, 0.8); /* 黑色 80% 透明度 */
-  backdrop-filter: blur(20px); /* 模糊透视 */
-  -webkit-backdrop-filter: blur(20px); /* Safari 兼容性 */
+  background: var(--bg-primary);
 }

@@ -6,7 +6,7 @@
   display: flex;
   gap: 24px;
   margin-bottom: 16px;
-  border-bottom: 1px solid #2A2A2A;
+  border-bottom: 1px solid var(--border-secondary);
 }
 
 .notif-tab {
@@ -51,7 +51,7 @@
 .notif-loading .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--border-primary);
   border-top: 2px solid var(--color-accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;

@@ -31,7 +31,7 @@
 }
 
 .sidebar-btn:hover:not(.disabled) {
-  background: rgba(255,255,255,0.08);
+  background: var(--hover-bg);
 }
 
 .sidebar-btn.active {
@@ -40,7 +40,7 @@
 }
 
 .sidebar-btn.disabled {
-  color: #4F4F4F;
+  color: var(--text-tertiary);
   cursor: not-allowed;
 }
 
@@ -74,7 +74,7 @@
 
 .sidebar-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-primary);
   margin: 16px;
 }
 
@@ -90,7 +90,7 @@
   bottom: 80px;
   left: 16px;
   width: 240px;
-  background: rgb(24,24,24);
+  background: var(--bg-secondary);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   z-index: 100;
@@ -109,7 +109,7 @@
 }
 
 .dropdown-item:hover {
-  background: rgba(255,255,255,0.08);
+  background: var(--hover-bg);
 }
 
 .dropdown-item:first-child {
@@ -144,7 +144,7 @@
 }
 
 .user-avatar-btn:hover {
-  background: rgba(255,255,255,0.08);
+  background: var(--hover-bg);
 }
 
 .user-avatar {
@@ -153,7 +153,7 @@
   border-radius: 50%;
   margin-right: 12px;
   object-fit: cover;
-  border: 2px solid rgba(255,255,255,0.1);
+  border: 2px solid var(--border-primary);
 }
 
 .user-name {
@@ -163,7 +163,7 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -176,7 +176,7 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .dropdown-arrow.rotated {
@@ -188,7 +188,7 @@
   top: 100%;
   left: 0;
   width: 160px;
-  background: #1A1A1A;
+  background: var(--bg-secondary);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   z-index: 200;
@@ -202,7 +202,7 @@
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #E0E0E0;
+  color: var(--text-secondary);
   border-radius: 0;
   border: none;
   background: transparent;
@@ -213,7 +213,7 @@
 }
 
 .user-dropdown .dropdown-item:hover {
-  background: rgba(255,255,255,0.08);
+  background: var(--hover-bg);
 }
 
 .user-dropdown .logout-item {
@@ -221,5 +221,5 @@
 }
 
 .user-dropdown .logout-item:hover {
-  background: rgba(255, 0, 31, 0.1);
+  background: rgba(255, 56, 92, 0.1);
 }
