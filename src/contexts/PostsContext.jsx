@@ -34,9 +34,26 @@ export const PostsProvider = ({ children }) => {
       comments: [
         {
           id: 'comment-1',
-          text: 'This world looks amazing! What\'s the name?',
+          text: 'This world looks amazing! What\'s the name? 😍',
           author: { name: 'CuriousUser', avatar: 'https://picsum.photos/32/32?random=11' },
-          timestamp: '2 hours ago'
+          timestamp: '2 hours ago',
+          likesCount: 3,
+          replies: [
+            {
+              id: 'reply-1-1',
+              text: 'It\'s called "Crystal Caverns" - you can find it in the fantasy worlds section! ✨',
+              author: { name: 'VR Explorer', avatar: 'https://picsum.photos/32/32?random=10' },
+              timestamp: '1 hour ago',
+              likesCount: 2
+            },
+            {
+              id: 'reply-1-2',
+              text: 'Thanks for sharing! Going to check it out right now 🚀',
+              author: { name: 'WorldHunter', avatar: 'https://picsum.photos/32/32?random=35' },
+              timestamp: '45 minutes ago',
+              likesCount: 1
+            }
+          ]
         }
       ],
       createdAt: new Date(Date.now() - 3600000).toISOString()
@@ -77,9 +94,19 @@ export const PostsProvider = ({ children }) => {
       comments: [
         {
           id: 'comment-2',
-          text: 'I was there too! Amazing performance!',
+          text: 'I was there too! Amazing performance! 🎵🎤',
           author: { name: 'ConcertGoer', avatar: 'https://picsum.photos/32/32?random=14' },
-          timestamp: '1 day ago'
+          timestamp: '1 day ago',
+          likesCount: 8,
+          replies: [
+            {
+              id: 'reply-2-1',
+              text: 'The bass drop was insane! My headset almost fell off 😂',
+              author: { name: 'BassHead', avatar: 'https://picsum.photos/32/32?random=36' },
+              timestamp: '20 hours ago',
+              likesCount: 5
+            }
+          ]
         }
       ],
       createdAt: new Date(Date.now() - 86400000).toISOString()
@@ -257,15 +284,42 @@ export const PostsProvider = ({ children }) => {
       comments: [
         {
           id: 'comment-10',
-          text: 'Playing Pac-Man in VR hits different!',
+          text: 'Playing Pac-Man in VR hits different! 👾🕹️',
           author: { name: 'ArcadeFan', avatar: 'https://picsum.photos/32/32?random=29' },
-          timestamp: '12 hours ago'
+          timestamp: '12 hours ago',
+          likesCount: 15,
+          replies: [
+            {
+              id: 'reply-10-1',
+              text: 'Right?! And the 3D maze perspective is mind-blowing 🤯',
+              author: { name: 'RetroGamer', avatar: 'https://picsum.photos/32/32?random=28' },
+              timestamp: '11 hours ago',
+              likesCount: 7
+            },
+            {
+              id: 'reply-10-2',
+              text: 'Wait until you try Space Invaders in there! 🚀👽',
+              author: { name: 'ClassicGamer', avatar: 'https://picsum.photos/32/32?random=37' },
+              timestamp: '9 hours ago',
+              likesCount: 4
+            }
+          ]
         },
         {
           id: 'comment-11',
-          text: 'The synthwave music really completes the vibe!',
+          text: 'The synthwave music really completes the vibe! 🎶💜',
           author: { name: 'SynthwaveFan', avatar: 'https://picsum.photos/32/32?random=30' },
-          timestamp: '10 hours ago'
+          timestamp: '10 hours ago',
+          likesCount: 12,
+          replies: [
+            {
+              id: 'reply-11-1',
+              text: 'The lighting effects sync perfectly with the beats too! 🌈✨',
+              author: { name: 'VisualFX_Pro', avatar: 'https://picsum.photos/32/32?random=38' },
+              timestamp: '8 hours ago',
+              likesCount: 6
+            }
+          ]
         }
       ],
       createdAt: new Date(Date.now() - 43200000).toISOString()
@@ -426,6 +480,130 @@ export const PostsProvider = ({ children }) => {
     return newComment;
   };
 
+  const addReply = (commentId, replyText) => {
+    const newReply = {
+      id: `reply-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      text: replyText,
+      author: { 
+        name: 'Current User', 
+        avatar: 'https://picsum.photos/32/32?random=99' 
+      },
+      timestamp: 'just now',
+      likesCount: 0
+    };
+
+    // Update posts array (includes both user and default posts)
+    const updatedPosts = posts.map(post => {
+      const updatedComments = post.comments?.map(comment => {
+        if (comment.id === commentId) {
+          const updatedReplies = [...(comment.replies || []), newReply];
+          return { ...comment, replies: updatedReplies };
+        }
+        return comment;
+      });
+      return { ...post, comments: updatedComments };
+    });
+    setPosts(updatedPosts);
+
+    // Also update userPosts if it's a user post
+    const updatedUserPosts = userPosts.map(post => {
+      const updatedComments = post.comments?.map(comment => {
+        if (comment.id === commentId) {
+          const updatedReplies = [...(comment.replies || []), newReply];
+          return { ...comment, replies: updatedReplies };
+        }
+        return comment;
+      });
+      return { ...post, comments: updatedComments };
+    });
+    setUserPosts(updatedUserPosts);
+    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+
+    console.log('💬 Added reply to comment', commentId, newReply);
+    return newReply;
+  };
+
+  const likeComment = (commentId, isLiked, isReply = false, parentCommentId = null) => {
+    const updateCommentLikes = (comments) => {
+      return comments?.map(comment => {
+        if (comment.id === commentId) {
+          const currentLikes = comment.likesCount || 0;
+          return {
+            ...comment,
+            likesCount: isLiked ? currentLikes + 1 : Math.max(0, currentLikes - 1)
+          };
+        }
+        
+        // If this is a reply, check in the replies array
+        if (isReply && comment.id === parentCommentId && comment.replies) {
+          const updatedReplies = comment.replies.map(reply => {
+            if (reply.id === commentId) {
+              const currentLikes = reply.likesCount || 0;
+              return {
+                ...reply,
+                likesCount: isLiked ? currentLikes + 1 : Math.max(0, currentLikes - 1)
+              };
+            }
+            return reply;
+          });
+          return { ...comment, replies: updatedReplies };
+        }
+        
+        return comment;
+      });
+    };
+
+    // Update posts array
+    const updatedPosts = posts.map(post => ({
+      ...post,
+      comments: updateCommentLikes(post.comments)
+    }));
+    setPosts(updatedPosts);
+
+    // Update userPosts if needed
+    const updatedUserPosts = userPosts.map(post => ({
+      ...post,
+      comments: updateCommentLikes(post.comments)
+    }));
+    setUserPosts(updatedUserPosts);
+    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+
+    console.log('❤️ Updated comment like count', commentId, isLiked ? '+1' : '-1');
+  };
+
+  const deleteComment = (commentId, isReply = false, parentCommentId = null) => {
+    const updateComments = (comments) => {
+      if (isReply && parentCommentId) {
+        return comments?.map(comment => {
+          if (comment.id === parentCommentId) {
+            const updatedReplies = comment.replies?.filter(reply => reply.id !== commentId) || [];
+            return { ...comment, replies: updatedReplies };
+          }
+          return comment;
+        });
+      } else {
+        return comments?.filter(comment => comment.id !== commentId);
+      }
+    };
+
+    // Update posts array
+    const updatedPosts = posts.map(post => ({
+      ...post,
+      comments: updateComments(post.comments)
+    }));
+    setPosts(updatedPosts);
+
+    // Update userPosts if needed
+    const updatedUserPosts = userPosts.map(post => ({
+      ...post,
+      comments: updateComments(post.comments)
+    }));
+    setUserPosts(updatedUserPosts);
+    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+
+    console.log('🗑️ Deleted comment', commentId);
+  };
+
   const deletePost = (postId) => {
     // Remove from userPosts
     const updatedUserPosts = userPosts.filter(post => post.id !== postId);
@@ -528,6 +706,9 @@ export const PostsProvider = ({ children }) => {
     removePost,
     updatePost,
     addComment,
+    addReply,
+    likeComment,
+    deleteComment,
     deletePost,
     updateLikeCount,
     updateSaveCount

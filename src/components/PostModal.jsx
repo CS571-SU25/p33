@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePosts } from '../contexts/PostsContext';
+import { useAuth } from '../contexts/AuthContext';
+import CommentInput from './CommentInput';
+import CommentItem from './CommentItem';
 import './PostModal.css';
 
 const PostModal = ({ post, isOpen, onClose }) => {
-  const { addComment, updateLikeCount, updateSaveCount, posts } = usePosts();
+  const { addComment, addReply, likeComment, deleteComment, updateLikeCount, updateSaveCount, posts } = usePosts();
+  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
+  const [replyTarget, setReplyTarget] = useState(null); // 当前回复目标
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -163,12 +168,103 @@ const PostModal = ({ post, isOpen, onClose }) => {
     setCurrentSlide((prev) => (prev - 1 + mediaCount) % mediaCount);
   };
 
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (commentText.trim()) {
-      const newComment = addComment(post.id, commentText.trim());
-      setComments(prev => [...prev, newComment]);
-      setCommentText('');
+  const handleCommentSubmit = (text) => {
+    if (text.trim()) {
+      if (replyTarget) {
+        // 如果有回复目标，添加为回复
+        const newReply = addReply(replyTarget.id, text.trim());
+        setComments(prev => prev.map(comment => {
+          if (comment.id === replyTarget.id) {
+            return {
+              ...comment,
+              replies: [...(comment.replies || []), newReply]
+            };
+          }
+          return comment;
+        }));
+        setReplyTarget(null); // 清除回复目标
+      } else {
+        // 否则添加为普通评论
+        const newComment = addComment(post.id, text.trim());
+        setComments(prev => [...prev, newComment]);
+      }
+    }
+  };
+
+  const handleReplyClick = (comment) => {
+    setReplyTarget(comment);
+    // 聚焦到评论输入框
+    setTimeout(() => {
+      const commentInput = document.querySelector('.comment-textarea');
+      if (commentInput) {
+        commentInput.focus();
+      }
+    }, 100);
+  };
+
+  const handleCancelReply = () => {
+    setReplyTarget(null);
+  };
+
+  const handleReply = (commentId, replyText) => {
+    if (replyText.trim()) {
+      const newReply = addReply(commentId, replyText.trim());
+      // Update comments with the new reply
+      setComments(prev => prev.map(comment => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            replies: [...(comment.replies || []), newReply]
+          };
+        }
+        return comment;
+      }));
+    }
+  };
+
+  const handleCommentLike = (commentId, isLiked, isReply = false, parentCommentId = null) => {
+    likeComment(commentId, isLiked, isReply, parentCommentId);
+    // Update local state for immediate UI feedback
+    setComments(prev => prev.map(comment => {
+      if (comment.id === commentId && !isReply) {
+        return {
+          ...comment,
+          likesCount: isLiked ? (comment.likesCount || 0) + 1 : Math.max(0, (comment.likesCount || 0) - 1)
+        };
+      }
+      if (isReply && comment.id === parentCommentId) {
+        return {
+          ...comment,
+          replies: comment.replies?.map(reply => {
+            if (reply.id === commentId) {
+              return {
+                ...reply,
+                likesCount: isLiked ? (reply.likesCount || 0) + 1 : Math.max(0, (reply.likesCount || 0) - 1)
+              };
+            }
+            return reply;
+          })
+        };
+      }
+      return comment;
+    }));
+  };
+
+  const handleCommentDelete = (commentId, isReply = false, parentCommentId = null) => {
+    deleteComment(commentId, isReply, parentCommentId);
+    // Update local state for immediate UI feedback
+    if (isReply && parentCommentId) {
+      setComments(prev => prev.map(comment => {
+        if (comment.id === parentCommentId) {
+          return {
+            ...comment,
+            replies: comment.replies?.filter(reply => reply.id !== commentId) || []
+          };
+        }
+        return comment;
+      }));
+    } else {
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
     }
   };
 
@@ -296,42 +392,35 @@ const PostModal = ({ post, isOpen, onClose }) => {
           </section>
 
           <section className="comments" id="comments">
-            <h3>Comments</h3>
+            <h3>Comments ({comments.length})</h3>
             <div className="comment-list">
               {comments.length > 0 ? comments.map((comment, index) => (
-                <div key={comment.id || index} className="comment">
-                  <img 
-                    className="comment-avatar" 
-                    src={comment.author?.avatar || '/default-avatar.png'}
-                    alt={comment.author?.name || 'User'}
-                  />
-                  <div className="comment-content">
-                    <strong>{comment.author?.name || 'Anonymous'}</strong>
-                    <p>{comment.text}</p>
-                    <span className="comment-time">{comment.timestamp}</span>
-                  </div>
-                </div>
+                <CommentItem
+                  key={comment.id || index}
+                  comment={comment}
+                  onReply={handleReply}
+                  onLike={handleCommentLike}
+                  onDelete={handleCommentDelete}
+                  currentUser={user}
+                  onReplyClick={handleReplyClick}
+                  replyTarget={replyTarget}
+                />
               )) : (
-                <p className="no-comments">No comments yet. Be the first to comment!</p>
+                <div className="no-comments">
+                  <div className="no-comments-icon">💬</div>
+                  <p>No comments yet. Be the first to comment!</p>
+                </div>
               )}
             </div>
           </section>
 
-          {/* Quick Reply */}
-          <div className="quick-reply">
-            <form onSubmit={handleCommentSubmit}>
-              <input
-                id="comment-input"
-                type="text"
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                placeholder="Add a comment..."
-              />
-              <button type="submit" disabled={!commentText.trim()}>
-                Post
-              </button>
-            </form>
-          </div>
+          {/* Comment Input */}
+          <CommentInput
+            onSubmit={handleCommentSubmit}
+            placeholder={replyTarget ? `回复 @${replyTarget.author?.name || 'Anonymous'}...` : "Add a comment..."}
+            replyTo={replyTarget}
+            onCancelReply={handleCancelReply}
+          />
         </article>
 
         {/* Close button */}

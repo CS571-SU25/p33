@@ -12,7 +12,8 @@
       "Bash(node:*)",
       "Bash(rm:*)",
       "WebFetch(domain:docs.anthropic.com)",
-      "Bash(timeout 15 npm run dev)"
+      "Bash(timeout 15 npm run dev)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

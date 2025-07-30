@@ -8,7 +8,7 @@
   background: var(--bg-panel);
   border-radius: var(--radius-lg);
   padding: var(--padding);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 .upload-title {
@@ -31,7 +31,7 @@
 .upload-area {
   width: 100%;
   aspect-ratio: 3/4;
-  border: 2px dashed rgba(255,255,255,0.3);
+  border: 2px dashed var(--border-primary);
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
@@ -45,12 +45,12 @@
 .upload-area:hover,
 .upload-area.dragging {
   border-color: var(--color-accent);
-  background: rgba(255,0,54,0.05);
+  background: var(--hover-bg-accent);
 }
 
 .upload-area.error {
   border-color: var(--accent);
-  background: rgba(255, 0, 31, 0.05);
+  background: var(--error-bg);
 }
 
 .upload-area.has-image {
@@ -75,7 +75,7 @@
 
 .upload-hint {
   font-size: var(--font-sm) !important;
-  color: rgba(255,255,255,0.5) !important;
+  color: var(--color-tertiary) !important;
 }
 
 .image-preview {
@@ -93,7 +93,7 @@
 .image-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: var(--overlay-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,7 +147,7 @@
   width: 100%;
   padding: 12px 16px;
   background: var(--bg-card);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-sm);
   color: var(--color-primary);
   font-size: var(--font-base);
@@ -198,12 +198,12 @@
 }
 
 .cancel-btn {
-  background: rgba(255,255,255,0.1);
+  background: var(--bg-tertiary);
   color: var(--color-primary);
 }
 
 .cancel-btn:hover {
-  background: rgba(255,255,255,0.15);
+  background: var(--hover-bg);
 }
 
 .publish-btn {
@@ -217,8 +217,8 @@
 }
 
 .publish-btn:disabled {
-  background: rgba(255,255,255,0.1);
-  color: var(--color-secondary);
+  background: var(--bg-tertiary);
+  color: var(--color-tertiary);
   cursor: not-allowed;
 }
 
@@ -262,7 +262,7 @@
 
 .input-error {
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 2px rgba(255, 0, 31, 0.2) !important;
+  box-shadow: 0 0 0 2px var(--error-glow) !important;
 }
 
 /* 登录错误页面 */
@@ -271,21 +271,21 @@
   padding: 48px 24px;
   background: var(--bg-panel);
   border-radius: var(--radius-lg);
-  border: 1px solid #2A2A2A;
+  border: 1px solid var(--border-secondary);
   max-width: 400px;
   margin: 0 auto;
 }
 
 .upload-error h2 {
   margin: 0 0 16px 0;
-  color: var(--text-primary);
+  color: var(--color-primary);
   font-family: var(--font-family-title);
   font-size: var(--font-size-lg);
 }
 
 .upload-error p {
   margin: 0 0 24px 0;
-  color: var(--text-secondary);
+  color: var(--color-secondary);
   font-size: var(--font-size-base);
 }
 
@@ -348,7 +348,7 @@
   right: 8px;
   width: 24px;
   height: 24px;
-  background: rgba(0,0,0,0.7);
+  background: var(--overlay-dark);
   border: none;
   border-radius: 50%;
   color: #FFFFFF;
@@ -361,7 +361,7 @@
 }
 
 .remove-image-btn:hover {
-  background: rgba(255,0,31,0.8);
+  background: var(--error-hover);
 }
 
 .main-image-badge {
@@ -382,15 +382,15 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  border: 2px dashed rgba(255,255,255,0.3);
+  border: 2px dashed var(--border-primary);
   border-radius: 8px;
-  background: rgba(255,255,255,0.05);
+  background: var(--bg-tertiary);
   transition: all 0.2s;
 }
 
 .add-more-images:hover {
   border-color: var(--color-accent);
-  background: rgba(255,0,31,0.1);
+  background: var(--hover-bg-accent);
 }
 
 .add-image-btn {
@@ -416,7 +416,7 @@
   align-items: center;
   justify-content: center;
   padding: 8px 12px;
-  background: rgba(255,255,255,0.1);
+  background: var(--bg-tertiary);
   border-radius: 6px;
   color: var(--color-secondary);
   font-size: 12px;

@@ -1,7 +1,7 @@
 /* Bootstrap Navbar 自定义样式 */
 .custom-navbar {
   background: var(--bg-page) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-primary);
   min-height: 64px;
   z-index: 100;
 }
@@ -58,13 +58,13 @@
   border-radius: 18px;
   overflow: hidden;
   background: var(--bg-card);
-  border: 1px solid #2A2A2A;
+  border: 1px solid var(--border-secondary);
   transition: all 0.2s;
 }
 
 .search-input-group:hover {
   background: var(--hover-bg);
-  border-color: #3A3A3A;
+  border-color: var(--border-secondary);
 }
 
 .search-input-custom {
@@ -110,6 +110,39 @@
 
 .nav-right-custom {
   gap: 16px;
+  align-items: center;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--prim);
+  transform: scale(1.1);
+}
+
+.theme-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle-btn:hover svg {
+  transform: rotate(20deg);
 }
 
 /* 响应式调整 */

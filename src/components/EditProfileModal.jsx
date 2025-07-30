@@ -50,7 +50,50 @@ const EditProfileModal = ({ isOpen, onClose, user, onSave }) => {
     }));
   };
 
-  const handleAvatarUpload = (e) => {
+  const convertImageToBase64 = (file, maxWidth = 400, quality = 0.8) => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
+        // Calculate new dimensions, maintain aspect ratio
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+        if (height > maxWidth) {
+          width = (width * maxWidth) / height;
+          height = maxWidth;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Draw compressed image
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Convert to base64
+        const base64 = canvas.toDataURL('image/jpeg', quality);
+        
+        // Clean up temporary URL
+        URL.revokeObjectURL(img.src);
+        
+        resolve(base64);
+      };
+      
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src);
+        resolve(null);
+      };
+      
+      // Create temporary URL for Image loading
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handleAvatarUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -66,16 +109,27 @@ const EditProfileModal = ({ isOpen, onClose, user, onSave }) => {
       return;
     }
 
-    // Create preview URL
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewAvatar(previewUrl);
-    
-    // In a real app, you would upload to a server here
-    // For demo purposes, we'll just use the preview URL
-    setFormData(prev => ({
-      ...prev,
-      avatar: previewUrl
-    }));
+    setIsUploading(true);
+
+    try {
+      // Convert to base64 for persistent storage
+      const base64Avatar = await convertImageToBase64(file, 400, 0.8);
+      
+      if (base64Avatar) {
+        setPreviewAvatar(base64Avatar);
+        setFormData(prev => ({
+          ...prev,
+          avatar: base64Avatar
+        }));
+      } else {
+        alert('Failed to process image. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error processing avatar:', error);
+      alert('Failed to process image. Please try again.');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = (e) => {

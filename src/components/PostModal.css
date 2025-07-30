@@ -24,7 +24,7 @@
   max-width: 960px;
   height: 80vh;
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--bg-primary);
   overflow: hidden;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -132,9 +132,9 @@
   align-items: center;
   gap: 24px;
   padding: 32px 0;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bg-secondary);
   backdrop-filter: blur(8px);
-  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 1px solid var(--border-primary);
 }
 
 .rail-btn {
@@ -145,7 +145,7 @@
   background: none;
   cursor: pointer;
   font-size: var(--fz-btn);
-  color: #666;
+  color: var(--text-secondary);
   transition: all var(--dur);
   padding: 8px;
   border-radius: 8px;
@@ -188,7 +188,7 @@
   padding: 24px 32px;
   font-family: var(--font-prim);
   scroll-behavior: smooth;
-  background: #fff;
+  background: var(--bg-primary);
 }
 
 .sheet::-webkit-scrollbar {
@@ -210,7 +210,7 @@
   gap: 12px;
   margin-bottom: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .sheet .avatar {
@@ -229,12 +229,12 @@
   font-weight: 600;
   margin: 0 0 4px 0;
   line-height: 1.3;
-  color: #000;
+  color: var(--text-primary);
 }
 
 .sheet .nick {
   font-size: 13px;
-  color: #999;
+  color: var(--text-tertiary);
   font-weight: 500;
 }
 
@@ -243,7 +243,7 @@
   font-size: var(--fz-body);
   line-height: 1.7;
   margin-bottom: 24px;
-  color: #333;
+  color: var(--text-secondary);
 }
 
 .sheet .body p {
@@ -259,7 +259,7 @@
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 16px 0;
-  color: #000;
+  color: var(--text-primary);
 }
 
 .comment {
@@ -283,82 +283,65 @@
 .comment-content strong {
   font-size: 14px;
   font-weight: 600;
-  color: #000;
+  color: var(--text-primary);
 }
 
 .comment-content p {
   margin: 4px 0;
   font-size: 14px;
   line-height: 1.4;
-  color: #333;
+  color: var(--text-secondary);
 }
 
 .comment-time {
   font-size: 12px;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 .no-comments {
   text-align: center;
-  color: #999;
-  font-style: italic;
-  padding: 24px 0;
-}
-
-/* Quick reply form */
-.quick-reply {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  color: var(--color-secondary);
+  padding: 40px 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 16px 0 0 0;
-  background: #fff;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  gap: 12px;
 }
 
-.quick-reply form {
-  display: flex;
-  width: 100%;
-  gap: 8px;
+.no-comments-icon {
+  font-size: 48px;
+  opacity: 0.6;
 }
 
-.quick-reply input {
-  flex: 1;
-  border-radius: 999px;
-  border: 1px solid #eee;
-  padding: 10px 16px;
-  font-size: var(--fz-btn);
-  font-family: var(--font-prim);
-  outline: none;
-  transition: border-color var(--dur);
+.no-comments p {
+  margin: 0;
+  font-size: var(--font-base);
+  font-style: italic;
 }
 
-.quick-reply input:focus {
-  border-color: var(--prim);
+/* Comment list container */
+.comment-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-bottom: 16px;
 }
 
-.quick-reply button {
-  background: var(--prim);
-  color: #fff;
-  border: 0;
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-size: var(--fz-btn);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background var(--dur);
+.comment-list::-webkit-scrollbar {
+  width: 6px;
 }
 
-.quick-reply button:hover:not(:disabled) {
-  background: var(--prim-hov);
+.comment-list::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.quick-reply button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.comment-list::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 3px;
+}
+
+.comment-list::-webkit-scrollbar-thumb:hover {
+  background: var(--border-secondary);
 }
 
 /* Close button */
