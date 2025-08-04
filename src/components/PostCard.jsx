@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { usePosts } from '../contexts/PostsContext';
+import { useAuth } from '../contexts/AuthContext';
 import './PostCard.css';
 
 const PostCard = ({ 
@@ -12,17 +13,24 @@ const PostCard = ({
   onDelete
 }) => {
   const { updateLikeCount, updateSaveCount } = usePosts();
+  const { user } = useAuth();
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showKebabMenu, setShowKebabMenu] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Get user-specific localStorage keys
+  const getUserStorageKey = (key) => {
+    const userId = user?.id || 'anonymous';
+    return `${key}_${userId}`;
+  };
+
   useEffect(() => {
     // Load like/save state from localStorage
     const updateStates = () => {
-      const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
-      const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+      const likedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
+      const savedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
       
       setIsLiked(likedPosts.includes(post.id));
       setIsSaved(savedPosts.includes(post.id));
@@ -50,18 +58,18 @@ const PostCard = ({
       window.removeEventListener('postLikeChange', handleLikeChange);
       window.removeEventListener('postSaveChange', handleSaveChange);
     };
-  }, [post.id]);
+  }, [post.id, user?.id]); // 添加 user?.id 依赖
 
   const handleLike = (e) => {
     e.stopPropagation();
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    const likedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
     
     if (isLiked) {
       const updated = likedPosts.filter(id => id !== post.id);
-      localStorage.setItem('likedPosts', JSON.stringify(updated));
+      localStorage.setItem(getUserStorageKey('likedPosts'), JSON.stringify(updated));
     } else {
       likedPosts.push(post.id);
-      localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+      localStorage.setItem(getUserStorageKey('likedPosts'), JSON.stringify(likedPosts));
     }
     
     const newLikedState = !isLiked;
@@ -78,14 +86,14 @@ const PostCard = ({
 
   const handleSave = (e) => {
     e.stopPropagation();
-    const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+    const savedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
     
     if (isSaved) {
       const updated = savedPosts.filter(id => id !== post.id);
-      localStorage.setItem('savedPosts', JSON.stringify(updated));
+      localStorage.setItem(getUserStorageKey('savedPosts'), JSON.stringify(updated));
     } else {
       savedPosts.push(post.id);
-      localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+      localStorage.setItem(getUserStorageKey('savedPosts'), JSON.stringify(savedPosts));
     }
     
     const newSavedState = !isSaved;

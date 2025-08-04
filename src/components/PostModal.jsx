@@ -16,10 +16,16 @@ const PostModal = ({ post, isOpen, onClose }) => {
   const [replyTarget, setReplyTarget] = useState(null); // 当前回复目标
   const modalRef = useRef(null);
 
+  // Get user-specific localStorage keys
+  const getUserStorageKey = (key) => {
+    const userId = user?.id || 'anonymous';
+    return `${key}_${userId}`;
+  };
+
   useEffect(() => {
     if (isOpen && post) {
-      const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
-      const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+      const likedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
+      const savedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
       
       setIsLiked(likedPosts.includes(post.id));
       setIsSaved(savedPosts.includes(post.id));
@@ -89,14 +95,14 @@ const PostModal = ({ post, isOpen, onClose }) => {
   };
 
   const handleLike = () => {
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    const likedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
     
     if (isLiked) {
       const updated = likedPosts.filter(id => id !== post.id);
-      localStorage.setItem('likedPosts', JSON.stringify(updated));
+      localStorage.setItem(getUserStorageKey('likedPosts'), JSON.stringify(updated));
     } else {
       likedPosts.push(post.id);
-      localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+      localStorage.setItem(getUserStorageKey('likedPosts'), JSON.stringify(likedPosts));
     }
     
     const newLikedState = !isLiked;
@@ -110,14 +116,14 @@ const PostModal = ({ post, isOpen, onClose }) => {
   };
 
   const handleSave = () => {
-    const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+    const savedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
     
     if (isSaved) {
       const updated = savedPosts.filter(id => id !== post.id);
-      localStorage.setItem('savedPosts', JSON.stringify(updated));
+      localStorage.setItem(getUserStorageKey('savedPosts'), JSON.stringify(updated));
     } else {
       savedPosts.push(post.id);
-      localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+      localStorage.setItem(getUserStorageKey('savedPosts'), JSON.stringify(savedPosts));
     }
     
     const newSavedState = !isSaved;

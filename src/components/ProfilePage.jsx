@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { usePosts } from '../contexts/PostsContext';
 import MasonryGrid from './MasonryGrid';
@@ -9,7 +9,7 @@ import './ProfilePage.css';
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
-  const { posts, userPosts: contextUserPosts, deletePost } = usePosts();
+  const { posts, getCurrentUserPosts, deletePost } = usePosts();
   const [activeTab, setActiveTab] = useState('posts');
   const [userPosts, setUserPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
@@ -23,19 +23,25 @@ const ProfilePage = () => {
   const loadPostsData = useCallback(() => {
     if (!user) return;
 
-    // User's own posts from contextUserPosts (only user-created posts)
-    setUserPosts(contextUserPosts);
+    // Get user-specific localStorage keys
+    const getUserStorageKey = (key) => {
+      const userId = user?.id || 'anonymous';
+      return `${key}_${userId}`;
+    };
 
-    // Liked posts from localStorage
-    const likedIds = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    // User's own posts from getCurrentUserPosts (only current user's posts)
+    setUserPosts(getCurrentUserPosts());
+
+    // Liked posts from localStorage (user-specific)
+    const likedIds = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
     const likedPostsData = posts.filter(post => likedIds.includes(post.id));
     setLikedPosts(likedPostsData);
 
-    // Saved posts from localStorage
-    const savedIds = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+    // Saved posts from localStorage (user-specific)
+    const savedIds = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
     const savedPostsData = posts.filter(post => savedIds.includes(post.id));
     setSavedPosts(savedPostsData);
-  }, [user, posts, contextUserPosts]);
+  }, [user, posts, getCurrentUserPosts]); // 移除 getUserStorageKey 依赖
 
   useEffect(() => {
     loadPostsData();
@@ -69,6 +75,7 @@ const ProfilePage = () => {
   }, []);
 
   const handleTabChange = (tab) => {
+    console.log('Tab change requested:', tab, 'Current tab:', activeTab);
     setActiveTab(tab);
   };
 
@@ -141,7 +148,8 @@ const ProfilePage = () => {
     loadPostsData();
   };
 
-  const getPostsToRender = () => {
+  // Memoize posts to render to prevent unnecessary re-renders
+  const postsToRender = useMemo(() => {
     switch (activeTab) {
       case 'posts':
         return userPosts;
@@ -152,9 +160,7 @@ const ProfilePage = () => {
       default:
         return [];
     }
-  };
-
-  const postsToRender = getPostsToRender();
+  }, [activeTab, userPosts, savedPosts, likedPosts]);
 
   if (!user) {
     return (
@@ -239,22 +245,37 @@ const ProfilePage = () => {
       <nav className="profile-tabs">
         <button 
           className={activeTab === 'posts' ? 'active' : ''}
-          onClick={() => handleTabChange('posts')}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleTabChange('posts');
+          }}
           data-tab="posts"
+          type="button"
         >
           Posts
         </button>
         <button 
           className={activeTab === 'saves' ? 'active' : ''}
-          onClick={() => handleTabChange('saves')}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleTabChange('saves');
+          }}
           data-tab="saves"
+          type="button"
         >
           Saved
         </button>
         <button 
           className={activeTab === 'likes' ? 'active' : ''}
-          onClick={() => handleTabChange('likes')}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleTabChange('likes');
+          }}
           data-tab="likes"
+          type="button"
         >
           Liked
         </button>

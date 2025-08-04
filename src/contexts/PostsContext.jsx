@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const PostsContext = createContext();
 
@@ -11,8 +12,15 @@ export const usePosts = () => {
 };
 
 export const PostsProvider = ({ children }) => {
+  const { user } = useAuth();
   const [userPosts, setUserPosts] = useState([]);
   const [posts, setPosts] = useState([]);
+
+  // Get user-specific localStorage keys
+  const getUserStorageKey = (key) => {
+    const userId = user?.id || 'anonymous';
+    return `${key}_${userId}`;
+  };
 
   // 默认示例帖子数据
   const defaultPosts = [
@@ -383,19 +391,35 @@ export const PostsProvider = ({ children }) => {
   ];
 
   useEffect(() => {
-    // 从localStorage加载用户发布的帖子
-    const storedPosts = localStorage.getItem('userPosts');
-    if (storedPosts) {
-      const loadedUserPosts = JSON.parse(storedPosts);
-      setUserPosts(loadedUserPosts);
-      console.log('📝 PostsContext: 从localStorage加载了', loadedUserPosts.length, '个用户帖子');
-    }
-  }, []);
+    // 加载所有用户的帖子数据，但要合并显示
+    const loadAllUserPosts = () => {
+      const allUserPosts = [];
+      
+      // 获取所有localStorage中的用户帖子键
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('userPosts_')) {
+          try {
+            const posts = JSON.parse(localStorage.getItem(key) || '[]');
+            allUserPosts.push(...posts);
+          } catch (error) {
+            console.error('Failed to parse user posts from', key, error);
+          }
+        }
+      }
+      
+      setUserPosts(allUserPosts);
+      console.log('📝 PostsContext: 加载了所有用户的', allUserPosts.length, '个帖子');
+    };
+
+    loadAllUserPosts();
+  }, []); // 只在组件mount时加载一次
 
   // 合并用户帖子和默认帖子，按时间排序
   useEffect(() => {
-    // Load saved counts for default posts
-    const defaultPostCounts = JSON.parse(localStorage.getItem('defaultPostCounts') || '{}');
+    // Load saved counts for default posts (user-specific)
+    const defaultPostCountsKey = getUserStorageKey('defaultPostCounts');
+    const defaultPostCounts = JSON.parse(localStorage.getItem(defaultPostCountsKey) || '{}');
     
     // Apply saved counts to default posts
     const updatedDefaultPosts = defaultPosts.map(post => ({
@@ -408,8 +432,8 @@ export const PostsProvider = ({ children }) => {
       new Date(b.createdAt) - new Date(a.createdAt)
     );
     setPosts(allPosts);
-    console.log('📝 PostsContext: 合并后的帖子总数', allPosts.length, '(用户帖子:', userPosts.length, '默认帖子:', updatedDefaultPosts.length, ')');
-  }, [userPosts]);
+    console.log('📝 PostsContext: 为用户', user?.id || 'anonymous', '合并后的帖子总数', allPosts.length, '(用户帖子:', userPosts.length, '默认帖子:', updatedDefaultPosts.length, ')');
+  }, [userPosts, user?.id]);
 
   const addPost = (newPost) => {
     // 如果帖子已经有ID，就使用现有ID；否则生成新ID
@@ -419,29 +443,96 @@ export const PostsProvider = ({ children }) => {
       createdAt: newPost.createdAt || new Date().toISOString()
     };
     
-    console.log('📝 PostsContext: 添加新帖子', postWithId);
+    console.log('📝 PostsContext: 为用户', user?.id, '添加新帖子', postWithId);
     
-    const updatedPosts = [postWithId, ...userPosts]; // 新帖子放在最前面
-    setUserPosts(updatedPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedPosts));
+    // 只保存到当前用户的存储中
+    const currentUserPosts = JSON.parse(localStorage.getItem(getUserStorageKey('userPosts')) || '[]');
+    const updatedCurrentUserPosts = [postWithId, ...currentUserPosts];
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedCurrentUserPosts));
     
-    console.log('📝 PostsContext: 更新后的帖子列表长度', updatedPosts.length);
+    // 重新加载所有用户帖子以更新显示
+    const loadAllUserPosts = () => {
+      const allUserPosts = [];
+      
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('userPosts_')) {
+          try {
+            const posts = JSON.parse(localStorage.getItem(key) || '[]');
+            allUserPosts.push(...posts);
+          } catch (error) {
+            console.error('Failed to parse user posts from', key, error);
+          }
+        }
+      }
+      
+      setUserPosts(allUserPosts);
+      console.log('📝 PostsContext: 重新加载了所有用户的', allUserPosts.length, '个帖子');
+    };
+    
+    loadAllUserPosts();
+    
+    console.log('📝 PostsContext: 用户', user?.id, '的帖子已添加');
     
     return postWithId;
   };
 
   const removePost = (postId) => {
-    const updatedPosts = userPosts.filter(post => post.id !== postId);
-    setUserPosts(updatedPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedPosts));
+    // 只从当前用户的存储中删除
+    const currentUserPosts = JSON.parse(localStorage.getItem(getUserStorageKey('userPosts')) || '[]');
+    const updatedCurrentUserPosts = currentUserPosts.filter(post => post.id !== postId);
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedCurrentUserPosts));
+    
+    // 重新加载所有用户帖子
+    const loadAllUserPosts = () => {
+      const allUserPosts = [];
+      
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('userPosts_')) {
+          try {
+            const posts = JSON.parse(localStorage.getItem(key) || '[]');
+            allUserPosts.push(...posts);
+          } catch (error) {
+            console.error('Failed to parse user posts from', key, error);
+          }
+        }
+      }
+      
+      setUserPosts(allUserPosts);
+    };
+    
+    loadAllUserPosts();
   };
 
   const updatePost = (postId, updates) => {
-    const updatedPosts = userPosts.map(post => 
+    // 只更新当前用户的存储中的帖子
+    const currentUserPosts = JSON.parse(localStorage.getItem(getUserStorageKey('userPosts')) || '[]');
+    const updatedCurrentUserPosts = currentUserPosts.map(post => 
       post.id === postId ? { ...post, ...updates } : post
     );
-    setUserPosts(updatedPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedCurrentUserPosts));
+    
+    // 重新加载所有用户帖子
+    const loadAllUserPosts = () => {
+      const allUserPosts = [];
+      
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('userPosts_')) {
+          try {
+            const posts = JSON.parse(localStorage.getItem(key) || '[]');
+            allUserPosts.push(...posts);
+          } catch (error) {
+            console.error('Failed to parse user posts from', key, error);
+          }
+        }
+      }
+      
+      setUserPosts(allUserPosts);
+    };
+    
+    loadAllUserPosts();
   };
 
   const addComment = (postId, commentText) => {
@@ -449,8 +540,8 @@ export const PostsProvider = ({ children }) => {
       id: `comment-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       text: commentText,
       author: { 
-        name: 'Current User', 
-        avatar: 'https://picsum.photos/32/32?random=99' 
+        name: user?.name || user?.username || 'Anonymous User', 
+        avatar: user?.avatar || 'https://picsum.photos/32/32?random=99' 
       },
       timestamp: 'just now'
     };
@@ -474,7 +565,7 @@ export const PostsProvider = ({ children }) => {
       return post;
     });
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
 
     console.log('💬 Added comment to post', postId, newComment);
     return newComment;
@@ -485,8 +576,8 @@ export const PostsProvider = ({ children }) => {
       id: `reply-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       text: replyText,
       author: { 
-        name: 'Current User', 
-        avatar: 'https://picsum.photos/32/32?random=99' 
+        name: user?.name || user?.username || 'Anonymous User', 
+        avatar: user?.avatar || 'https://picsum.photos/32/32?random=99' 
       },
       timestamp: 'just now',
       likesCount: 0
@@ -517,7 +608,7 @@ export const PostsProvider = ({ children }) => {
       return { ...post, comments: updatedComments };
     });
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
 
     console.log('💬 Added reply to comment', commentId, newReply);
     return newReply;
@@ -566,7 +657,7 @@ export const PostsProvider = ({ children }) => {
       comments: updateCommentLikes(post.comments)
     }));
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
 
     console.log('❤️ Updated comment like count', commentId, isLiked ? '+1' : '-1');
   };
@@ -599,7 +690,7 @@ export const PostsProvider = ({ children }) => {
       comments: updateComments(post.comments)
     }));
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
 
     console.log('🗑️ Deleted comment', commentId);
   };
@@ -608,7 +699,7 @@ export const PostsProvider = ({ children }) => {
     // Remove from userPosts
     const updatedUserPosts = userPosts.filter(post => post.id !== postId);
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
     
     // Update merged posts array
     const updatedPosts = posts.filter(post => post.id !== postId);
@@ -643,7 +734,7 @@ export const PostsProvider = ({ children }) => {
       return post;
     });
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
 
     // For default posts, save the updated counts to localStorage
     if (postId.startsWith('demo-')) {
@@ -652,7 +743,7 @@ export const PostsProvider = ({ children }) => {
         ...defaultPostCounts[postId],
         likesCount: updatedPosts.find(p => p.id === postId)?.likesCount || 0
       };
-      localStorage.setItem('defaultPostCounts', JSON.stringify(defaultPostCounts));
+      localStorage.setItem(getUserStorageKey('defaultPostCounts'), JSON.stringify(defaultPostCounts));
     }
 
     console.log('❤️ Updated like count for post', postId, isLiked ? '+1' : '-1');
@@ -684,7 +775,7 @@ export const PostsProvider = ({ children }) => {
       return post;
     });
     setUserPosts(updatedUserPosts);
-    localStorage.setItem('userPosts', JSON.stringify(updatedUserPosts));
+    localStorage.setItem(getUserStorageKey('userPosts'), JSON.stringify(updatedUserPosts));
 
     // For default posts, save the updated counts to localStorage
     if (postId.startsWith('demo-')) {
@@ -693,15 +784,23 @@ export const PostsProvider = ({ children }) => {
         ...defaultPostCounts[postId],
         savesCount: updatedPosts.find(p => p.id === postId)?.savesCount || 0
       };
-      localStorage.setItem('defaultPostCounts', JSON.stringify(defaultPostCounts));
+      localStorage.setItem(getUserStorageKey('defaultPostCounts'), JSON.stringify(defaultPostCounts));
     }
 
     console.log('💾 Updated save count for post', postId, isSaved ? '+1' : '-1');
   };
 
+  // 获取当前用户的帖子（用于ProfilePage）
+  const getCurrentUserPosts = () => {
+    if (!user?.id) return [];
+    const currentUserPosts = JSON.parse(localStorage.getItem(getUserStorageKey('userPosts')) || '[]');
+    return currentUserPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  };
+
   const value = {
     posts, // 合并后的所有帖子 (用于HomePage显示)
-    userPosts, // 仅用户帖子 (用于ProfilePage显示)
+    userPosts, // 所有用户的帖子 (重命名但保持兼容性)
+    getCurrentUserPosts, // 当前用户的帖子 (用于ProfilePage显示)
     addPost,
     removePost,
     updatePost,

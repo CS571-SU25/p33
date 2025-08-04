@@ -10,6 +10,31 @@ function SignupPage() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  // 随机用户名生成器
+  const generateRandomUsername = () => {
+    const adjectives = [
+      'Amazing', 'Awesome', 'Bright', 'Creative', 'Cool', 'Dynamic', 'Epic', 'Fantastic',
+      'Glowing', 'Happy', 'Incredible', 'Joyful', 'Kinetic', 'Legendary', 'Magical', 'Noble',
+      'Outstanding', 'Powerful', 'Quantum', 'Radiant', 'Stellar', 'Thunderous', 'Ultimate', 'Vibrant',
+      'Wonderful', 'Xtreme', 'Youthful', 'Zealous', 'Cosmic', 'Digital', 'Electric', 'Futuristic',
+      'Genius', 'Heroic', 'Infinite', 'Luminous', 'Mystic', 'Phoenix', 'Shadow', 'Turbo'
+    ];
+    
+    const nouns = [
+      'Explorer', 'Creator', 'Dreamer', 'Builder', 'Hunter', 'Wizard', 'Knight', 'Ninja',
+      'Pilot', 'Rider', 'Warrior', 'Guardian', 'Master', 'Legend', 'Champion', 'Pioneer',
+      'Voyager', 'Seeker', 'Wanderer', 'Adventurer', 'Artist', 'Genius', 'Hero', 'Maverick',
+      'Phantom', 'Racer', 'Sage', 'Titan', 'Viper', 'Wolf', 'Dragon', 'Phoenix',
+      'Storm', 'Blade', 'Fire', 'Ice', 'Lightning', 'Nova', 'Comet', 'Galaxy'
+    ];
+    
+    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+    const randomNumber = Math.floor(Math.random() * 999) + 1;
+    
+    return `${randomAdjective}${randomNoun}${randomNumber}`;
+  };
+
   // 验证规则
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,9 +128,11 @@ function SignupPage() {
       }
       
       // 创建新用户数据
+      const randomUsername = generateRandomUsername();
       const newUser = {
         id: Date.now().toString(),
-        name: 'New User',
+        name: randomUsername,
+        username: randomUsername, // 添加username字段
         email: email.trim(),
         avatar: 'https://picsum.photos/40/40?random=' + Date.now()
       };

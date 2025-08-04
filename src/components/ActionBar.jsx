@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import './ActionBar.css';
 
 function ActionBar({ post, onLike, onSave, onComment, onShare }) {
+  const { user } = useAuth();
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likes || 0);
   const [showSaveTooltip, setShowSaveTooltip] = useState(false);
 
+  // Get user-specific localStorage keys
+  const getUserStorageKey = (key) => {
+    const userId = user?.id || 'anonymous';
+    return `${key}_${userId}`;
+  };
+
   useEffect(() => {
-    // 检查是否已保存
-    const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+    // 检查是否已保存 (用户特定)
+    const savedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
     setIsSaved(savedPosts.includes(post?.id));
 
-    // 检查是否已点赞
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    // 检查是否已点赞 (用户特定)
+    const likedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
     setIsLiked(likedPosts.includes(post?.id));
-  }, [post?.id]);
+  }, [post?.id, user?.id]); // 添加 user?.id 依赖
 
   const handleLike = () => {
     const newIsLiked = !isLiked;
@@ -25,14 +33,14 @@ function ActionBar({ post, onLike, onSave, onComment, onShare }) {
     setLikeCount(newLikeCount);
 
     // 更新localStorage
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    const likedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('likedPosts')) || '[]');
     if (newIsLiked) {
       likedPosts.push(post.id);
     } else {
       const index = likedPosts.indexOf(post.id);
       if (index > -1) likedPosts.splice(index, 1);
     }
-    localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+    localStorage.setItem(getUserStorageKey('likedPosts'), JSON.stringify(likedPosts));
 
     if (onLike) onLike(newIsLiked, newLikeCount);
   };
@@ -42,7 +50,7 @@ function ActionBar({ post, onLike, onSave, onComment, onShare }) {
     setIsSaved(newIsSaved);
 
     // 更新localStorage
-    const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+    const savedPosts = JSON.parse(localStorage.getItem(getUserStorageKey('savedPosts')) || '[]');
     if (newIsSaved) {
       savedPosts.push(post.id);
       // 显示保存提示
@@ -52,7 +60,7 @@ function ActionBar({ post, onLike, onSave, onComment, onShare }) {
       const index = savedPosts.indexOf(post.id);
       if (index > -1) savedPosts.splice(index, 1);
     }
-    localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+    localStorage.setItem(getUserStorageKey('savedPosts'), JSON.stringify(savedPosts));
 
     if (onSave) onSave(newIsSaved);
   };
