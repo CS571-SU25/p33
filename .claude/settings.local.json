@@ -1,5 +1,6 @@
 {
-  "permissions": {
+  "systemMessage": null,
+  "preApprovalSettings": {
     "allow": [
       "Bash(git add:*)",
       "Bash(npm run lint)",
