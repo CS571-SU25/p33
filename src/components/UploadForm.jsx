@@ -317,6 +317,8 @@ function UploadForm() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
+              onClick={() => document.getElementById('file-input').click()}
+              style={{ cursor: 'pointer' }}
             >
               {images.length > 0 ? (
                 <div className="images-preview">

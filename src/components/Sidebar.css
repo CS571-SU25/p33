@@ -122,6 +122,20 @@
   border-bottom-right-radius: 8px;
 }
 
+/* Logout item styling */
+.dropdown-item.logout-item {
+  color: var(--accent);
+  font-weight: 500;
+  border-top: 1px solid var(--hover-bg);
+  margin-top: 4px;
+  padding-top: 8px;
+}
+
+.dropdown-item.logout-item:hover {
+  background: rgba(255, 0, 31, 0.1);
+  color: var(--accent);
+}
+
 /* User Avatar Section */
 .user-section {
   position: relative;

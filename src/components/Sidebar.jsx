@@ -7,7 +7,7 @@ function Sidebar() {
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const baseMenuItems = [
     { 
@@ -62,7 +62,8 @@ function Sidebar() {
     { label: 'Help & Support', path: '/help' },
     { label: 'Privacy Settings', path: '/privacy' },
     { label: 'Terms of Service', path: '/terms' },
-    { label: 'About Us', path: '/about-us' }
+    { label: 'About Us', path: '/about-us' },
+    ...(isAuthenticated ? [{ label: 'Logout', action: 'logout', isLogout: true }] : [])
   ];
 
 
@@ -74,6 +75,17 @@ function Sidebar() {
 
   const handleUserAvatarClick = () => {
     navigate('/profile');
+  };
+
+  const handleLogout = async () => {
+    try {
+      // 执行登出操作
+      logout();
+      // 跳转到登录页面
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
 
@@ -134,9 +146,24 @@ function Sidebar() {
             {moreItems.map((item, index) => (
               <button
                 key={index}
-                className="dropdown-item"
-                onClick={() => navigate(item.path)}
+                className={`dropdown-item ${item.isLogout ? 'logout-item' : ''}`}
+                onClick={() => {
+                  if (item.isLogout) {
+                    handleLogout();
+                  } else {
+                    navigate(item.path);
+                  }
+                  setShowMore(false); // 关闭菜单
+                }}
               >
+                {item.isLogout && (
+                  <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '8px' }}>
+                    <path 
+                      fill="currentColor" 
+                      d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"
+                    />
+                  </svg>
+                )}
                 {item.label}
               </button>
             ))}
